@@ -1,32 +1,30 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:slicing_romadon/providers/ticket_provider.dart';
 
 class AppCard extends StatelessWidget {
   final String ticketName;
-  final int ticketPrice;
+  final int priceTicket;
   final int index;
 
   const AppCard({
     Key? key,
     required this.ticketName,
-    required this.ticketPrice,
+    required this.priceTicket,
     required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ticketProvider = Provider.of<TicketProvider>(context);
-
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
             child: Container(
               height: 121,
-              width: double.infinity,
+              width: 327,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -35,6 +33,7 @@ class AppCard extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -46,44 +45,70 @@ class AppCard extends StatelessWidget {
                   children: [
                     Text(
                       ticketName,
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     Text('Nusantara', style: TextStyle(fontSize: 11)),
                     SizedBox(height: 16),
                     Text(
-                      'Rp. ${ticketPrice}',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      priceTicket.toString(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: ticketProvider.pengurangan,
-                        icon: Image.asset('assets/images/minus.png'),
+              Padding(
+                padding: const EdgeInsets.only(right: 24),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Provider.of<TicketProvider>(
+                              context,
+                              listen: false,
+                            ).pengurangan(index);
+                          },
+                          icon: Image.asset('assets/images/minus.png'),
+                        ),
+                        Consumer<TicketProvider>(
+                          builder: (context, ticketProvider, child) {
+                            return Text(
+                             ticketProvider.getAddTicket(index).toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Provider.of<TicketProvider>(
+                              context,
+                              listen: false,
+                            ).penambahan(index);
+                          },
+                          icon: Image.asset('assets/images/plus.png'),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Rp. ${Provider.of<TicketProvider>(context).getAddTicket(index) * priceTicket}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        ticketProvider.addTicket.toString(),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        onPressed: ticketProvider.penambahan,
-                        icon: Image.asset('assets/images/plus.png'),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'Rp. ${ticketProvider.addTicket * ticketPrice}',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(width: 20),
             ],
           ),
         ],

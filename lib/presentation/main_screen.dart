@@ -4,7 +4,6 @@ import 'package:slicing_romadon/presentation/home_screen.dart';
 import 'package:slicing_romadon/presentation/setting_screen.dart';
 import 'package:slicing_romadon/presentation/ticket_screen.dart';
 
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -20,9 +19,10 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: screen[pagePosition],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         unselectedIconTheme: IconThemeData(color: Colors.white),
         selectedIconTheme: IconThemeData(color: Colors.blueAccent),
-        unselectedItemColor: Color(0xffA7AEC1),
+        unselectedItemColor: Colors.black,
         selectedItemColor: Color(0xff3949AB),
         currentIndex: pagePosition,
         onTap:
@@ -30,7 +30,10 @@ class _MainScreenState extends State<MainScreen> {
               pagePosition = index;
             }),
         items: [
-          BottomNavigationBarItem( icon: Image.asset('assets/images/home.png'), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/images/home.png'),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
             icon: Image.asset('assets/images/ticket.png'),
             label: 'Ticket',
@@ -39,7 +42,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: Image.asset('assets/images/history.png'),
             label: 'History',
           ),
-          BottomNavigationBarItem(icon: Image.asset('assets/images/setting.png'), label: 'Setting'),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/images/setting.png'),
+            label: 'Setting',
+          ),
         ],
       ),
     );
