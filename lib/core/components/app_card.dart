@@ -1,17 +1,19 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:slicing_romadon/providers/ticket_provider.dart';
 
 class AppCard extends StatelessWidget {
   final String ticketName;
   final int priceTicket;
   final int index;
+  final int count;
 
   const AppCard({
     Key? key,
     required this.ticketName,
     required this.priceTicket,
     required this.index,
+    required this.count,
   }) : super(key: key);
 
   @override
@@ -52,12 +54,20 @@ class AppCard extends StatelessWidget {
                     ),
                     Text('Nusantara', style: TextStyle(fontSize: 11)),
                     SizedBox(height: 16),
-                    Text(
-                      priceTicket.toString(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Consumer<TicketProvider>(
+                      builder: (context, ticketProvider, child) {
+                        int currentCount = ticketProvider.getAddTicket(index);
+                        int totalPrice =
+                            currentCount * priceTicket; // Harga dihitung ulang
+
+                        return Text(
+                          'Rp. ${totalPrice}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -80,7 +90,7 @@ class AppCard extends StatelessWidget {
                         Consumer<TicketProvider>(
                           builder: (context, ticketProvider, child) {
                             return Text(
-                             ticketProvider.getAddTicket(index).toString(),
+                              ticketProvider.getAddTicket(index).toString(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -98,13 +108,6 @@ class AppCard extends StatelessWidget {
                           icon: Image.asset('assets/images/plus.png'),
                         ),
                       ],
-                    ),
-                    Text(
-                      'Rp. ${Provider.of<TicketProvider>(context).getAddTicket(index) * priceTicket}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
                     ),
                   ],
                 ),

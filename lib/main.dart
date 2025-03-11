@@ -1,4 +1,5 @@
   import 'package:flutter/material.dart';
+import 'package:slicing_romadon/presentation/detail_order.dart';
   import 'package:slicing_romadon/presentation/main_screen.dart';
   import 'package:slicing_romadon/presentation/splashing_screen.dart';
   import 'package:slicing_romadon/presentation/login_screen.dart';
@@ -28,6 +29,7 @@
           '/': (context) => SplashingScreen(),
           '/login': (context) => LoginScreen(),
           '/main-screen': (context) => MainScreen(),
+          '/detail-order': (context) => DetailOrderScreen()
         },
       );
     }
