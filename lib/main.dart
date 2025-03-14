@@ -1,21 +1,13 @@
   import 'package:flutter/material.dart';
-import 'package:slicing_romadon/presentation/detail_order.dart';
+  import 'package:slicing_romadon/presentation/detail_order_screen.dart';
   import 'package:slicing_romadon/presentation/main_screen.dart';
   import 'package:slicing_romadon/presentation/splashing_screen.dart';
   import 'package:slicing_romadon/presentation/login_screen.dart';
-  import 'package:provider/provider.dart';
-  import 'package:slicing_romadon/providers/ticket_provider.dart'; 
 
   void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TicketProvider()),
-      ],
-      child: const SlicingApp(),
-    ),
-  );
+  runApp(const SlicingApp());
 }
+
 
   class SlicingApp extends StatelessWidget {
     const SlicingApp({super.key});

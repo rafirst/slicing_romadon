@@ -64,6 +64,7 @@ flutter:
     - assets/images/setting.png
     - assets/images/plus.png
     - assets/images/minus.png
+    - assets/images/square.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

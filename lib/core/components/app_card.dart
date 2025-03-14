@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:slicing_romadon/providers/ticket_provider.dart';
 
-class AppCard extends StatelessWidget {
-  final String ticketName;
-  final int priceTicket;
-  final int index;
-  final int count;
-
-  const AppCard({
-    Key? key,
-    required this.ticketName,
-    required this.priceTicket,
-    required this.index,
+class AppCard extends StatefulWidget {
+  AppCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.price,
     required this.count,
-  }) : super(key: key);
+    required this.onIncrement,
+    required this.onDecrement,
+  });
 
+  final String title;
+  final String subtitle;
+  final int price;
+  final int count;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
+
+  @override
+  State<AppCard> createState() => _AppCardState();
+}
+
+class _AppCardState extends State<AppCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,77 +44,83 @@ class AppCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 21,
-                  horizontal: 24,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ticketName,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
+              Expanded(
+                // Biarkan teks fleksibel
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 21,
+                    horizontal: 16, // Kurangi padding horizontal
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    Text('Nusantara', style: TextStyle(fontSize: 11)),
-                    SizedBox(height: 16),
-                    Consumer<TicketProvider>(
-                      builder: (context, ticketProvider, child) {
-                        int currentCount = ticketProvider.getAddTicket(index);
-                        int totalPrice =
-                            currentCount * priceTicket; // Harga dihitung ulang
-
-                        return Text(
-                          'Rp. ${totalPrice}',
+                      Text(widget.subtitle, style: TextStyle(fontSize: 11)),
+                      SizedBox(height: 16),
+                      Text(
+                        'Rp. ${widget.price}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 16,
+                ), // Kurangi padding kanan
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize:
+                          MainAxisSize.min, // Hindari memaksakan lebar
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if (widget.count > 0) {
+                              widget.onDecrement();
+                            }
+                          },
+                          icon: Image.asset(
+                            'assets/images/minus.png',
+                            width: 35,
+                            height: 35,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          widget.count.toString(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Provider.of<TicketProvider>(
-                              context,
-                              listen: false,
-                            ).pengurangan(index);
-                          },
-                          icon: Image.asset('assets/images/minus.png'),
                         ),
-                        Consumer<TicketProvider>(
-                          builder: (context, ticketProvider, child) {
-                            return Text(
-                              ticketProvider.getAddTicket(index).toString(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          },
-                        ),
+                        SizedBox(width: 8),
                         IconButton(
-                          onPressed: () {
-                            Provider.of<TicketProvider>(
-                              context,
-                              listen: false,
-                            ).penambahan(index);
-                          },
-                          icon: Image.asset('assets/images/plus.png'),
+                          onPressed: widget.onIncrement,
+                          icon: Image.asset(
+                            'assets/images/plus.png',
+                            width: 35,
+                            height: 35,
+                          ),
                         ),
                       ],
+                    ),
+                    Text(
+                      'Rp ${widget.count * widget.price}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
